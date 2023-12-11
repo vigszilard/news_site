@@ -11,8 +11,8 @@
 
     // Check if the user has the writer role
     if ($user["role_id"] !== 2) {
-        // Redirect to dashboard if the user doesn't have the writer role
-        header("Location: ../dashboard.php");
+        $_SESSION["no_rights_error"] = "Only writers are allowed to submit articles.";
+        header("Location: ../dashboard.php?error=" . urlencode($_SESSION["no_rights_error"]));
         exit();
     }
 
@@ -24,12 +24,13 @@
         $database = new Database();
         $article = new Article($database);
 
-        $result = $article-> add_article($title, $content, $user["id"], $category_id);
+        $result = $article -> add_article($title, $content, $user["id"], $category_id);
 
         if ($result) {
             header("Location: ../dashboard.php");
-            exit();
         } else {
-            echo "Article submission failed. Please try again.";
+            $_SESSION["submit_article_error"] = "Article submission failed. Please try again.";
+            header("Location: ../dashboard.php?error=" . urlencode($_SESSION["submit_article_error"]));
         }
+        exit();
     }

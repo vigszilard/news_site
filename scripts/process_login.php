@@ -16,8 +16,9 @@
 
         if ($result) {
             header("Location: ../dashboard.php");
-            exit();
         } else {
-            echo "Login failed. Please check your credentials and try again.";
+            $_SESSION["login_error"] = "Login failed. Please check your credentials and try again.";
+            header("Location: ../login.php?error=" . urlencode($_SESSION["login_error"]));
         }
+        exit();
     }

@@ -10,28 +10,37 @@
         <base href="http://localhost:63342/newspaper/">
         <title>Newspaper | Login</title>
     </head>
-    <body>
 
+    <body>
         <?php include "includes/header.php"; ?>
+        <?php include "includes/error_toast.php"; ?>
 
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">Login</h5>
+                            <h5 class="mb-0">Log in</h5>
                         </div>
                         <div class="card-body">
                             <form action="scripts/process_login.php" method="post">
-                                <div class="form-group">
-                                    <label for="email">E-mail:</label>
-                                    <input type="text" class="form-control" id="email" name="email" required>
+                                <div class="form-group row">
+                                    <label for="email" class="col-sm-3 col-form-label">E-mail:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="email" name="email" required>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password">Password:</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="form-group row">
+                                    <label for="password" class="col-sm-3 col-form-label">Password:</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control" id="password" name="password" required>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Login</button>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -44,5 +53,6 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="js/script.js"></script>
     </body>
 </html>

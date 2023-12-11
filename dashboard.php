@@ -33,6 +33,7 @@
     <body>
 
     <?php include "includes/header.php"; ?>
+    <?php include "includes/error_toast.php"; ?>
 
     <div class="container mt-4">
         <div class="row">
@@ -44,15 +45,24 @@
 
         <?php if ($user["role_id"] == 3): // Editor Role ?>
             <div class="row mt-4">
-                <?php
-                foreach ($declined_articles as $article): ?>
+                <?php foreach ($declined_articles as $article): ?>
                     <div class="col-md-6">
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $article["title"]; ?></h5>
                                 <p class="card-text"><?php echo $article["content"]; ?></p>
-                                <button class="btn btn-success">Approve</button>
-                                <button class="btn btn-danger">Decline</button>
+
+                                <div class="d-flex justify-content-between">
+                                    <form action="scripts/approve_article.php" method="post">
+                                        <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
+                                        <button type="submit" class="btn btn-success">Approve</button>
+                                    </form>
+
+                                    <form action="decline_article.php" method="post">
+                                        <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
+                                        <button type="submit" class="btn btn-danger">Decline</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -120,6 +130,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
 
     </body>
 </html>

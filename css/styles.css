@@ -49,3 +49,23 @@
         display: none;
     }
 }
+
+/*Toast*/
+
+#toast-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+#error-toast {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+
+#error-toast {
+    max-width: 800px; /* Adjust as needed */
+}

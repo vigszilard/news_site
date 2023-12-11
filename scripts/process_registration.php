@@ -17,12 +17,11 @@
 
         $result = $auth -> register($email, $password, $firstname, $lastname, $role_id);
 
-        echo $result;
-
         if ($result) {
             header("Location: ../dashboard.php");
-            exit();
         } else {
-            echo "Registration failed. Please try again.";
+            $_SESSION["register_error"] = "Register failed. Please try again.";
+            header("Location: ../register.php?error=" . urlencode($_SESSION["register_error"]));
         }
+        exit();
     }
