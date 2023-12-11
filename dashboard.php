@@ -1,18 +1,19 @@
 <?php
     include "classes/Database.php";
-    include "classes/Journalist.php";
     include "classes/Article.php";
     include "classes/Category.php";
-
     session_start();
+
+    $database = new Database();
+    $article = new Article($database);
+    $category = new Category($database);
+
     if (!isset($_SESSION["user"])) {
         header("Location: login.php");
         exit();
     }
+
     $user = $_SESSION["user"];
-    $database = new Database();
-    $article = new Article($database);
-    $category = new Category($database);
     $declined_articles = $article -> get_declined_articles();
     $writer_articles = $article -> get_articles_by_author_id($user["id"]);
     $all_categories = $category -> get_all_categories();

@@ -10,9 +10,14 @@ class Auth {
     public function login($email, $password): bool {
         $user_data = $this -> journalist -> get_journalist_by_email($email);
 
-        //Todo remove || when all users are created with hashed passwords
-        if ($user_data && (password_verify($password, $user_data["password"])) || $password == $user_data["password"]) {
-            $_SESSION["user"] = $user_data;
+        if ($user_data && password_verify($password, $user_data["password"])) {
+            $_SESSION["user"] = [
+                "id" => $user_data["id"],
+                "email" => $user_data["email"],
+                "role_id" => $user_data["role_id"],
+                "firstname" => $user_data["firstname"],
+                "lastname" => $user_data["lastname"]
+            ];
             return true;
         }
         return false;
@@ -29,17 +34,19 @@ class Auth {
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $user_id = $this -> journalist -> add_journalist($email, $hashedPassword, $firstname, $lastname, $role_id);
+        $user_data = $this -> journalist -> add_journalist($email, $hashedPassword, $firstname, $lastname, $role_id);
 
-        var_dump($user_id); // Add this line for debugging
-        if ($user_id) {
+        if ($user_data) {
             $_SESSION["user"] = [
-                "id" => $user_id,
-                "email" => $email,
-                "role_id" => $role_id
+                "id" => $user_data["id"],
+                "email" => $user_data["email"],
+                "role_id" => $user_data["role_id"],
+                "firstname" => $user_data["firstname"],
+                "lastname" => $user_data["lastname"]
             ];
 
-            return $user_id;
+            var_dump($_SESSION); // Add this line for debugging
+            return true;
         }
         return false;
     }

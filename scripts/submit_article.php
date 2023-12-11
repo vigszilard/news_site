@@ -1,8 +1,8 @@
 <?php
     include "../classes/Database.php";
     include "../classes/Article.php";
-
     session_start();
+
     if (!isset($_SESSION["user"])) {
         header("Location: ../login.php");
         exit();

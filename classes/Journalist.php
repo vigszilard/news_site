@@ -32,7 +32,7 @@ class Journalist {
         return $statement -> fetch(PDO::FETCH_ASSOC);
     }
 
-    public function add_journalist($email, $password, $firstname, $lastname, $role_id): bool {
+    public function add_journalist($email, $password, $firstname, $lastname, $role_id) {
         $query = "INSERT INTO journalists (email, password, firstname, lastname, role_id) 
                   VALUES (:email, :password, :firstname, :lastname, :role_id)";
         $statement = $this -> db -> prepare($query);
@@ -42,7 +42,10 @@ class Journalist {
         $statement -> bindParam(':lastname', $lastname);
         $statement -> bindParam(':role_id', $role_id);
 
-        return $statement -> execute();
+        if ($statement -> execute()) {
+            return $this -> get_journalist_by_email($email);
+        }
+        return false;
     }
 
     public function is_email_taken($email): bool {
