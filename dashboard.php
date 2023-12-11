@@ -2,6 +2,7 @@
     include "classes/Database.php";
     include "classes/Article.php";
     include "classes/Category.php";
+    include "utils.php";
     session_start();
 
     $database = new Database();
@@ -25,7 +26,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-b8PDDdPBdlHH38LY47D3l9pL+g0TCrxI3RxXUE1V8zIfoPKge+PnNQhT9CGCDaLR" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/styles.css">
         <base href="http://localhost:63342/newspaper/">
         <title>Newspaper | Dashboard</title>
@@ -35,7 +36,7 @@
     <?php include "components/header.php"; ?>
     <?php include "components/error_toast.php"; ?>
 
-    <div class="container mt-4">
+    <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-md-12">
                 <h2>Dashboard</h2>
@@ -48,19 +49,19 @@
                 <?php foreach ($declined_articles as $article): ?>
                     <div class="col-md-6">
                         <div class="card mb-4">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h5 class="card-title"><?php echo $article["title"]; ?></h5>
-                                <p class="card-text"><?php echo $article["content"]; ?></p>
+                                <p class="card-text flex-grow-1 text-justify"><?php echo $article["content"]; ?></p>
 
                                 <div class="d-flex justify-content-between">
                                     <form action="scripts/approve_article.php" method="post">
                                         <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                                        <button type="submit" class="btn btn-success">Approve</button>
+                                        <button type="submit" class="btn btn-primary">Approve</button>
                                     </form>
 
                                     <form action="decline_article.php" method="post">
                                         <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                                        <button type="submit" class="btn btn-danger">Decline</button>
+                                        <button type="submit" class="btn btn-primary">Decline</button>
                                     </form>
                                 </div>
                             </div>
@@ -69,42 +70,60 @@
                 <?php endforeach; ?>
             </div>
         <?php elseif ($user["role_id"] == 2): // Writer Role ?>
-            <div class="row mt-4">
-                <div class="col-md-6 offset-md-3">
-                    <form action="scripts/submit_article.php" method="post">
-                        <div class="form-group">
-                            <label for="title">Title:</label>
-                            <input id="title" type="text" class="form-control" name="title" required>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Submit Article</h5>
                         </div>
-                        <div class="form-group">
-                            <label for="content">Content:</label>
-                            <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
+                        <div class="card-body">
+                            <form action="scripts/submit_article.php" method="post">
+                                <div class="form-group">
+                                    <label for="title">Title:</label>
+                                    <input id="title" type="text" class="form-control" name="title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Content:</label>
+                                    <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category_id">Category:</label>
+                                    <select id="category_id" class="form-control" name="category_id">
+                                        <?php foreach ($all_categories as $category): ?>
+                                            <option value="<?php echo $category["id"]; ?>">
+                                                <?php echo $category["name"]; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Submit Article</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="category_id">Category:</label>
-                            <select id="category_id" class="form-control" name="category_id">
-                                <?php foreach ($all_categories as $category): ?>
-                                    <option value="<?php echo $category["id"]; ?>">
-                                        <?php echo $category["name"]; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit Article</button>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-md-6 offset-md-3">
+                <div class="col-md-12">
+                    <h3>My Articles</h3>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-12">
                     <div id="articleCarousel" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
+                        <div class="carousel-inner text-center">
                             <?php
-                            foreach ($writer_articles as $index => $writer_article): ?>
+                            foreach ($writer_articles as $index => $article): ?>
                                 <div class="carousel-item <?php echo $index === 0 ? "active" : ""; ?>">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $writer_article["title"]; ?></h5>
-                                            <p class="card-text">Status: <?php echo $writer_article["status"]; ?></p>
+                                    <div class="card-deck">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?php echo $article["title"]; ?></h5>
+                                                <p class="card-text flex-grow-1 text-justify">
+                                                    <?php echo get_substring($article["content"]); ?>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +141,6 @@
                 </div>
             </div>
         <?php endif; ?>
-
     </div>
 
     <?php include "components/footer.php"; ?>

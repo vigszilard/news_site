@@ -19,17 +19,43 @@
 }
 
 #header-container .navbar-nav .nav-link {
-    color: #DEDEDE;
+    color: #3a3a3a;
+    padding: 10px;
 }
 
-#header-container .btn-primary {
+.btn-primary {
     background-color: #616161;
     border-color: #616161;
 }
 
-#header-container .btn-primary:hover {
+.btn-primary:hover {
     background-color: #c9c9c9;
     border-color: #c9c9c9;
+}
+
+.btn-secondary {
+    background-color: #c9c9c9;
+    border-color: #c9c9c9;
+}
+
+.btn-secondary:hover {
+    background-color: #616161;
+    border-color: #616161;
+}
+
+.social-icon {
+    color: #616161;
+    font-size: 24px;
+    padding: 10px;
+}
+
+.social-icon:hover {
+    color: #c9c9c9;
+}
+
+#footer-container {
+    background-color: #3a3a3a;
+    padding: 10px;
 }
 
 @media (max-width: 767px) {
@@ -41,8 +67,8 @@
         display: block;
     }
 
-    #header-container .btn-primary {
-        display: inline-block; /* Ensure the button stays in the same line */
+    .btn-primary {
+        display: inline-block;
     }
 
     #header-container .nav-link.d-inline-block.d-md-none {
@@ -68,4 +94,20 @@
 
 #error-toast {
     max-width: 800px; /* Adjust as needed */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: #3a3a3a;
+}
+
+.carousel-control-prev {
+    left: -10%;
+}
+
+.carousel-control-next {
+    right: -10%;
+}
+
+.carousel-control-prev-icon::before, .carousel-control-next-icon::before {
+    font-size: 3rem;
 }

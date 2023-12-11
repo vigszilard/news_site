@@ -8,12 +8,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>You need an account to read the full article. Please log in or create an account.</p>
+                <p>You need a <b>Reader</b> account to read the full article. Please log in or create an account.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="../login.php" class="btn btn-primary">Log In</a>
-                <a href="../register.php" class="btn btn-success">Register</a>
+                <a href="login.php" class="btn btn-primary">Log In</a>
+                <a href="register.php" class="btn btn-primary">Register</a>
             </div>
         </div>
     </div>
