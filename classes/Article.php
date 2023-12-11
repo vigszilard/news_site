@@ -40,15 +40,6 @@ class Article {
         return $statement -> fetch(PDO::FETCH_ASSOC);
     }
 
-    public function get_article_by_author_id($author_id) {
-        $query = "SELECT * FROM articles WHERE author_id = :author_id";
-        $statement = $this -> db -> prepare($query);
-        $statement -> bindParam(':author_id', $author_id);
-        $statement -> execute();
-
-        return $statement -> fetch(PDO::FETCH_ASSOC);
-    }
-
     public function add_article($title, $content, $author_id, $category_id): bool {
         $query = "INSERT INTO articles (title, content, author_id, category_id) 
                   VALUES (:title, :content, :author_id, :category_id)";

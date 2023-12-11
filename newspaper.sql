@@ -22,13 +22,6 @@ CREATE TABLE journalists(
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
-INSERT INTO journalists(`email`, `password`, `firstname`, `lastname`, `role_id`) VALUES
-('mihai.lupu@reader.com', 'reader12345', 'Mihai', 'Lupu', 1),
-('ana.blandiana@reader.com', 'reader12345', 'Ana', 'Blandiana', 1),
-('Georgiana.chis@reader.com', 'reader12345', 'Georgiana', 'Chis', 1),
-('vasile.pop@writer.com', 'writer12345', 'Vasile', 'Pop', 2),
-('eugen.ionescu@editor.com', 'editor12345', 'Eugen', 'Ionescu', 3);
-
 CREATE TABLE categories (
     id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL

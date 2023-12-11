@@ -27,7 +27,7 @@
     </head>
 
     <body>
-        <?php include "includes/header.php"; ?>
+        <?php include "components/header.php"; ?>
 
         <div class="container mt-4">
             <div class="row justify-content-center">
@@ -73,8 +73,8 @@
             </div>
         </div>
 
-        <?php include "includes/footer.php"; ?>
-        <?php include "includes/modal.php"; ?>
+        <?php include "components/footer.php"; ?>
+        <?php include "components/modal.php"; ?>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
