@@ -1,0 +1,53 @@
+CREATE DATABASE newspaper;
+
+USE newspaper;
+
+CREATE TABLE roles(
+    id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(25) NOT NULL
+);
+
+INSERT INTO roles(`name`) VALUES
+('Reader'),
+('Writer'),
+('Editor');
+
+CREATE TABLE journalists(
+    id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(50) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    role_id INT(6) NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
+INSERT INTO journalists(`email`, `password`, `firstname`, `lastname`, `role_id`) VALUES
+('mihai.lupu@reader.com', 'reader12345', 'Mihai', 'Lupu', 1),
+('ana.blandiana@reader.com', 'reader12345', 'Ana', 'Blandiana', 1),
+('Georgiana.chis@reader.com', 'reader12345', 'Georgiana', 'Chis', 1),
+('vasile.pop@writer.com', 'writer12345', 'Vasile', 'Pop', 2),
+('eugen.ionescu@editor.com', 'editor12345', 'Eugen', 'Ionescu', 3);
+
+CREATE TABLE categories (
+    id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO categories(`name`) VALUES
+('Artistic'),
+('Technical'),
+('Science'),
+('Fashion');
+
+CREATE TABLE articles (
+    id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(250) NOT NULL,
+    content TEXT NOT NULL,
+    author_id INT(6) NOT NULL,
+    category_id INT(6) NOT NULL,
+    is_approved BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (author_id) REFERENCES journalists(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);

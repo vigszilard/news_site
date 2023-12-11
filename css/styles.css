@@ -1,0 +1,51 @@
+/* styles.css */
+
+#header-container {
+    background-color: #3a3a3a;
+    padding: 10px;
+}
+
+#header-container .navbar-brand img {
+    max-width: 150px;
+    height: auto;
+}
+
+#header-container .navbar-toggler-icon {
+    background-color: #DEDEDE;
+}
+
+#header-container .navbar-toggler {
+    border-color: #DEDEDE;
+}
+
+#header-container .navbar-nav .nav-link {
+    color: #DEDEDE;
+}
+
+#header-container .btn-primary {
+    background-color: #616161;
+    border-color: #616161;
+}
+
+#header-container .btn-primary:hover {
+    background-color: #c9c9c9;
+    border-color: #c9c9c9;
+}
+
+@media (max-width: 767px) {
+    #header-container .navbar-nav .nav-link {
+        color: #DEDEDE;
+    }
+
+    #header-container .navbar-toggler {
+        display: block;
+    }
+
+    #header-container .btn-primary {
+        display: inline-block; /* Ensure the button stays in the same line */
+    }
+
+    #header-container .nav-link.d-inline-block.d-md-none {
+        display: none;
+    }
+}
