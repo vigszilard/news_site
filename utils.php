@@ -11,11 +11,14 @@ function format_timestamp($timestamp): string
     $interval = $now -> diff($article_time);
 
     if ($interval -> d > 0) {
-        return $interval -> format('%a days ago, ' . $article_time -> format('d/m/Y'));
+        $days = $interval -> d == 1 ? "day" : "days";
+        return $interval -> format("%a $days ago, " . $article_time -> format("d/m/Y"));
     } elseif ($interval -> h > 0) {
-        return $interval -> format('%h hours ago, ' . $article_time -> format('d/m/Y'));
+        $hours = $interval -> h == 1 ? "hour" : "hours";
+        return $interval -> format("%h $hours ago, " . $article_time -> format("d/m/Y"));
     } else {
-        return $interval -> format('%i minutes ago, ' . $article_time -> format('d/m/Y'));
+        $minutes = $interval -> i == 1 ? "minute" : "minutes";
+        return $interval -> format("%i $minutes ago, " . $article_time -> format("d/m/Y"));
     }
 }
 
@@ -24,7 +27,7 @@ function get_substring($content, $max_length = 200): string
     $substring = mb_substr($content, 0, $max_length);
 
     if (mb_strlen($content) > $max_length) {
-        $substring .= '...';
+        $substring .= "...";
     }
 
     return $substring;

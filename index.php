@@ -28,8 +28,9 @@
 
     <body>
         <?php include "components/header.php"; ?>
+        <?php include "components/error_toast.php"; ?>
 
-        <div class="container mt-4">
+        <div class="container mt-5 mb-5">
             <div class="row justify-content-center">
 
                 <?php if (empty($all_articles)): ?>
@@ -53,11 +54,12 @@
                                         </span>
                                         <span class="card-subtitle mb-2 text-muted font-italic py-2">
                                             <?php
-                                            try {
-                                                echo format_timestamp($article["created_at"]);
-                                            } catch (Exception $e) {
-                                                echo "Unknown";
-                                            } ?>
+                                                try {
+                                                    echo format_timestamp($article["created_at"]);
+                                                } catch (Exception $e) {
+                                                    echo "Unknown";
+                                                }
+                                            ?>
                                         </span>
                                     </div>
                                     <p class="card-text flex-grow-1 text-justify">
@@ -65,9 +67,10 @@
                                     </p>
 
                                     <?php
+                                        $_SESSION["article_id"] = $article["id"];
                                         $is_logged_in = isset($_SESSION["user"]);
                                         $modal_attributes = $is_logged_in ? "" : "data-toggle='modal' data-target='#readMoreModal'";
-                                        $button_action = $is_logged_in ? "location.href='article.php'" : "";
+                                        $button_action = $is_logged_in ? "location.href='article.php?id={$article['id']}'" : "";
                                     ?>
                                     <button type="button" class="btn btn-primary mt-auto" <?php echo $modal_attributes; ?>onclick="<?php echo $button_action; ?>">
                                         Read More
@@ -87,6 +90,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="js/script.js"></script>
 
     </body>
 </html>

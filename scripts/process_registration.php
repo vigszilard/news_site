@@ -18,7 +18,12 @@
         $result = $auth -> register($email, $password, $firstname, $lastname, $role_id);
 
         if ($result) {
-            header("Location: ../dashboard.php");
+            if($_SESSION["article_id"]) {
+                header("Location: ../article.php?id={$_SESSION['article_id']}");
+                unset($_SESSION["article_id"]);
+            } else {
+                header("Location: ../dashboard.php");
+            }
         } else {
             $_SESSION["register_error"] = "Register failed. Please try again.";
             header("Location: ../register.php?error=" . urlencode($_SESSION["register_error"]));

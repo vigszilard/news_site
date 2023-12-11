@@ -43,6 +43,15 @@
     border-color: #616161;
 }
 
+.btn-link {
+    color: #616161;
+}
+
+.btn-link:hover {
+    color: #c9c9c9;
+    text-decoration: none;
+}
+
 .social-icon {
     color: #616161;
     font-size: 24px;
@@ -56,6 +65,7 @@
 #footer-container {
     background-color: #3a3a3a;
     padding: 10px;
+    bottom: 0;
 }
 
 @media (max-width: 767px) {

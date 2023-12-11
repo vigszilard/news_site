@@ -1,9 +1,9 @@
 <div id="toast-container">
-    <div id="error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="error-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1" data-autohide="false">
         <div class="toast-header">
             <i class="fas fa-exclamation-circle text-danger mr-2"></i>
             <strong class="mr-auto">Error</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" onClick="hideErrorToast()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

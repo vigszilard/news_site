@@ -15,7 +15,12 @@
         $result = $auth -> login($email, $password);
 
         if ($result) {
-            header("Location: ../dashboard.php");
+            if(isset($_SESSION["article_id"])) {
+                header("Location: ../article.php?id={$_SESSION['article_id']}");
+                unset($_SESSION["article_id"]);
+            } else {
+                header("Location: ../dashboard.php");
+            }
         } else {
             $_SESSION["login_error"] = "Login failed. Please check your credentials and try again.";
             header("Location: ../login.php?error=" . urlencode($_SESSION["login_error"]));

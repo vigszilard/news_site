@@ -44,3 +44,10 @@ CREATE TABLE articles (
     FOREIGN KEY (author_id) REFERENCES journalists(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
+
+CREATE TABLE amendments (
+    id INT(6) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    text VARCHAR(250) NOT NULL,
+    article_id INT(6) NOT NULL,
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+);

@@ -36,6 +36,9 @@
     <?php include "components/header.php"; ?>
     <?php include "components/error_toast.php"; ?>
 
+    <a class="ml-5 mt-5 btn-link" href="index.php">
+        <i class="fas fa-chevron-left"></i> Back
+    </a>
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-md-12">
