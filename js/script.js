@@ -15,3 +15,13 @@ function hideErrorToast() {
     document.getElementById("toast-container").style.display = "none";
     toast.style.opacity = 0;
 }
+
+function setArticleId(articleId) {
+    window.articleId = articleId;
+}
+
+function getArticleId(el) {
+    $(el).prev().val(window.articleId);
+    console.log($(el).prev().val());
+}
+

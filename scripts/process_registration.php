@@ -10,6 +10,7 @@
         $firstname = $_POST["firstname"];
         $lastname = $_POST["lastname"];
         $role_id = $_POST["role_id"];
+        $article_id = $_POST["article_id"];
 
         $database = new Database();
         $journalist = new Journalist($database);
@@ -18,9 +19,11 @@
         $result = $auth -> register($email, $password, $firstname, $lastname, $role_id);
 
         if ($result) {
-            if($_SESSION["article_id"]) {
-                header("Location: ../article.php?id={$_SESSION['article_id']}");
-                unset($_SESSION["article_id"]);
+            $user = $journalist -> get_journalist_by_email($email);
+            if($article_id) {
+                header("Location: ../article.php?id={'$article_id'}");
+            } else if($user["role_id"] == 1) {
+                header("Location: ../index.php");
             } else {
                 header("Location: ../dashboard.php");
             }

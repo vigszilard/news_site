@@ -70,9 +70,9 @@
                                         $_SESSION["article_id"] = $article["id"];
                                         $is_logged_in = isset($_SESSION["user"]);
                                         $modal_attributes = $is_logged_in ? "" : "data-toggle='modal' data-target='#readMoreModal'";
-                                        $button_action = $is_logged_in ? "location.href='article.php?id={$article['id']}'" : "";
+                                        $button_action = $is_logged_in ? "location.href='article.php?id={$article['id']}'" : "setArticleId('{$article['id']}')";
                                     ?>
-                                    <button type="button" class="btn btn-primary mt-auto" <?php echo $modal_attributes; ?>onclick="<?php echo $button_action; ?>">
+                                    <button type="button" class="btn btn-primary mt-auto" <?php echo $modal_attributes; ?> onclick="<?php echo $button_action; ?>">
                                         Read More
                                     </button>
 

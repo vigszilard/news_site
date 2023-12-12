@@ -121,3 +121,10 @@
 .carousel-control-prev-icon::before, .carousel-control-next-icon::before {
     font-size: 3rem;
 }
+
+#collapseAmendments {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-left-style: none;
+    border-right-style: none;
+}

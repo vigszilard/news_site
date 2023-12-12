@@ -41,7 +41,8 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                                        <input type="hidden" name="article_id" id="article_id" value="">
+                                        <button type="submit" class="btn btn-primary btn-block" onclick="getArticleId(this)">Log in</button>
                                     </div>
                                 </div>
                             </form>

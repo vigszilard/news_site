@@ -24,4 +24,13 @@ class Amendment {
         return $statement -> fetch(PDO::FETCH_ASSOC);
     }
 
+    public function add_amendment($text, $article_id): bool {
+        $query = "INSERT INTO amendments (text, article_id) VALUES (:text, :article_id)";
+        $statement = $this -> db -> prepare($query);
+        $statement -> bindParam(':text', $text);
+        $statement -> bindParam(':article_id', $article_id);
+
+        return $statement -> execute();
+    }
+
 }

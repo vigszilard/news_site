@@ -2,12 +2,14 @@
     include "classes/Database.php";
     include "classes/Article.php";
     include "classes/Category.php";
+    include "classes/Amendment.php";
     include "utils.php";
     session_start();
 
     $database = new Database();
     $article = new Article($database);
     $category = new Category($database);
+    $amendments = new Amendment($database);
 
     if (!isset($_SESSION["user"])) {
         header("Location: login.php");
@@ -50,27 +52,69 @@
         <?php if ($user["role_id"] == 3): // Editor Role ?>
             <div class="row mt-4">
                 <?php foreach ($declined_articles as $article): ?>
-                    <div class="col-md-6">
-                        <div class="card mb-4">
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><?php echo $article["title"]; ?></h5>
-                                <p class="card-text flex-grow-1 text-justify"><?php echo $article["content"]; ?></p>
+                    <?php $amendment = $amendments -> get_amendment_by_article_id($article["id"]);
+                    if (!$amendment) : ?>
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><?php echo $article["title"]; ?></h5>
+                                    <p class="card-text flex-grow-1 text-justify"><?php echo $article["content"]; ?></p>
 
-                                <div class="d-flex justify-content-between">
-                                    <form action="scripts/approve_article.php" method="post">
-                                        <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                                        <button type="submit" class="btn btn-primary">Approve</button>
-                                    </form>
+                                    <div class="d-flex justify-content-between">
+                                        <form action="scripts/approve_article.php" method="post">
+                                            <input type="hidden" name="article_id" value="<?php echo $article["id"]; ?>">
+                                            <button type="submit" class="btn btn-primary">Approve</button>
+                                        </form>
 
-                                    <form action="decline_article.php" method="post">
-                                        <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                                        <button type="submit" class="btn btn-primary">Decline</button>
-                                    </form>
+                                        <form action="scripts/decline_article.php" method="post">
+                                            <input type="hidden" name="article_id" value="<?php echo $article["id"]; ?>">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#amendmentModal" onclick="setArticleId(<?php echo $article['id']; ?>)">
+                                                Decline
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
+            </div>
+            <div id="accordion" class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" id="headingAmendments">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseAmendments" aria-expanded="false" aria-controls="collapseAmendments">
+                                    <i class="fas fa-chevron-down"></i>
+                                    Waiting for changes...
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseAmendments" class="collapse" aria-labelledby="headingAmendments" data-parent="#accordion">
+                            <div class="row mt-4">
+                                <?php foreach ($declined_articles as $declined_article) : ?>
+                                    <?php $amendment = $amendments -> get_amendment_by_article_id($declined_article["id"]);
+                                    if ($amendment) : ?>
+                                        <div class="col-md-6 p-3">
+                                            <div class="card mb-4">
+                                                <div class="card-body text-center">
+                                                    <h5 class="card-title"><?php echo $declined_article["title"]; ?></h5>
+                                                    <!--                                                    <p class="card-text flex-grow-1 text-justify">--><?php //echo $declined_article["content"]; ?><!--</p>-->
+                                                    <div class="d-flex justify-content-center">
+                                                        <form action="" method="post">
+                                                            <input type="hidden" name="article_id" value="<?php echo $declined_article["id"]; ?>">
+                                                            <button type="submit" class="btn btn-primary">Show amendments</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php elseif ($user["role_id"] == 2): // Writer Role ?>
             <div class="row justify-content-center mt-4">
@@ -106,25 +150,30 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h3>My Articles</h3>
+                <div class="col-md-12 p-3">
+                    <h5 class="text-muted">My Articles</h5>
                 </div>
-            </div>
-            <div class="row mt-4">
                 <div class="col-md-12">
                     <div id="articleCarousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner text-center">
-                            <?php
-                            foreach ($writer_articles as $index => $article): ?>
+                            <?php foreach ($writer_articles as $index => $each_article): ?>
                                 <div class="carousel-item <?php echo $index === 0 ? "active" : ""; ?>">
                                     <div class="card-deck">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title"><?php echo $article["title"]; ?></h5>
+                                                <h5 class="card-title"><?php echo $each_article["title"]; ?></h5>
                                                 <p class="card-text flex-grow-1 text-justify">
-                                                    <?php echo get_substring($article["content"]); ?>
+                                                    <?php echo get_substring($each_article["content"]); ?>
+                                                </p>
+                                                <p class="font-weight-bold">
+                                                    <?php
+                                                    $amendment = $amendments -> get_amendment_by_article_id($each_article["id"]);
+                                                    $status = $each_article["is_approved"] == 1 ? "Article approved" :
+                                                        ($amendment ? "Changes required" : "Waiting for approval");
+
+                                                    $statusClass = $each_article["is_approved"] == 1 ? "text-success" : ($amendment ? "text-warning" : "text-secondary");
+                                                    echo "<span class='{$statusClass}'>{$status}</span>";
+                                                    ?>
                                                 </p>
                                             </div>
                                         </div>
@@ -144,6 +193,36 @@
                 </div>
             </div>
         <?php endif; ?>
+    </div>
+
+    <!-- Modal for writing amendments -->
+    <div class="modal fade" id="amendmentModal" tabindex="-1" role="dialog" aria-labelledby="amendmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="amendmentModalLabel">Write Amendments</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="amendmentForm" action="scripts/decline_article.php" method="post">
+                        <div class="form-group row">
+                            <label for="amendmentText" class="col-sm-3 col-form-label">Amendments:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="amendmentText" name="text" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12 text-center">
+                                <input type="hidden" id="article_id" name="article_id" value="">
+                                <button type="submit" class="btn btn-primary btn-block" onclick="getArticleId(this)">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <?php include "components/footer.php"; ?>
