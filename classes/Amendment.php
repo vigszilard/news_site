@@ -33,4 +33,12 @@ class Amendment {
         return $statement -> execute();
     }
 
+    public function delete_amendment($amendment_id): bool {
+        $query = "DELETE FROM amendments WHERE id = :id";
+        $statement = $this -> db -> prepare($query);
+        $statement -> bindParam(':id', $amendment_id);
+
+        return $statement -> execute();
+    }
+
 }

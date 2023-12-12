@@ -68,7 +68,7 @@
 
                                         <form action="scripts/decline_article.php" method="post">
                                             <input type="hidden" name="article_id" value="<?php echo $article["id"]; ?>">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#amendmentModal" onclick="setArticleId(<?php echo $article['id']; ?>)">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#amendmentModal" data-article-id="<?php echo $article["id"]; ?>" onclick="setArticleId()">
                                                 Decline
                                             </button>
                                         </form>
@@ -99,11 +99,10 @@
                                             <div class="card mb-4">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title"><?php echo $declined_article["title"]; ?></h5>
-                                                    <!--                                                    <p class="card-text flex-grow-1 text-justify">--><?php //echo $declined_article["content"]; ?><!--</p>-->
                                                     <div class="d-flex justify-content-center">
                                                         <form action="" method="post">
                                                             <input type="hidden" name="article_id" value="<?php echo $declined_article["id"]; ?>">
-                                                            <button type="submit" class="btn btn-primary">Show amendments</button>
+                                                            <button type="button" class="btn btn-primary show-amendments" data-toggle="modal" data-target="#amendmentModal" data-article-id="<?php echo $declined_article["id"]; ?>" data-amendment-details="<?php echo htmlspecialchars(json_encode($amendment), ENT_QUOTES, 'UTF-8'); ?>">Show amendments</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -165,16 +164,32 @@
                                                 <p class="card-text flex-grow-1 text-justify">
                                                     <?php echo get_substring($each_article["content"]); ?>
                                                 </p>
-                                                <p class="font-weight-bold">
-                                                    <?php
+                                                <?php
                                                     $amendment = $amendments -> get_amendment_by_article_id($each_article["id"]);
                                                     $status = $each_article["is_approved"] == 1 ? "Article approved" :
                                                         ($amendment ? "Changes required" : "Waiting for approval");
 
                                                     $statusClass = $each_article["is_approved"] == 1 ? "text-success" : ($amendment ? "text-warning" : "text-secondary");
+                                                    echo "<p class='font-weight-bold'>";
                                                     echo "<span class='{$statusClass}'>{$status}</span>";
-                                                    ?>
-                                                </p>
+                                                    echo "</p>";
+                                                ?>
+                                                <?php if($status == "Changes required") :?>
+                                                    <div class="d-flex justify-content-center">
+                                                        <div class="col-md-6"
+                                                            <form action="" method="post">
+                                                                <input type="hidden" name="article_id" value="<?php echo $each_article["id"]; ?>">
+                                                                <button type="button" class="btn btn-primary show-amendments" data-toggle="modal" data-target="#amendmentModal" data-article-id="<?php echo $each_article["id"]; ?>" data-amendment-details="<?php echo htmlspecialchars(json_encode($amendment), ENT_QUOTES, 'UTF-8'); ?>">Show amendments</button>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <form action="" method="post">
+                                                                <input type="hidden" name="article_id" value="<?php echo $each_article["id"]; ?>">
+                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submitArticleModal" data-amendment-id="<?php echo $amendment["id"]; ?>" data-article-details="<?php echo htmlspecialchars(json_encode($each_article), ENT_QUOTES, 'UTF-8'); ?>">Update Article</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +215,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="amendmentModalLabel">Write Amendments</h5>
+                    <h5 class="modal-title" id="amendmentModalLabel">Amendments</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -215,8 +230,9 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12 text-center">
-                                <input type="hidden" id="article_id" name="article_id" value="">
-                                <button type="submit" class="btn btn-primary btn-block" onclick="getArticleId(this)">Submit</button>
+                                <input type="hidden" id="modalArticleId" name="article_id" value="">
+                                <input type="hidden" id="amendmentDetails" name="amendment_details" value="">
+                                <button id="submitBtn" type="submit" class="btn btn-primary btn-block" onclick="getArticleId()">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -225,6 +241,7 @@
         </div>
     </div>
 
+    <?php include "components/updateArticleForm.php"; ?>
     <?php include "components/footer.php"; ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
